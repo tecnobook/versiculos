@@ -1,6 +1,8 @@
 // pages/index.tsx
 import { useState, useEffect } from 'react';
+import React from "react";
 import styles from '../styles/Home.module.css';
+import Toast from "../components/Toast";
 
 interface Verse {
   text: string;
@@ -10,11 +12,12 @@ interface Verse {
   theme: string;
 }
 
-const Home = () => {
+const Home: React.FC = () => {
   const [verses, setVerses] = useState<Verse[]>([]);
   const [filteredVerses, setFilteredVerses] = useState<Verse[]>([]);
   const [themeFilter, setThemeFilter] = useState<string>('');
   const [showOptions, setShowOptions] = useState(false);
+
   const [newVerse, setNewVerse] = useState<Verse>({
     text: '',
     book: '',
@@ -23,6 +26,19 @@ const Home = () => {
     theme: '',
   });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
+  const [showToast, setShowToast] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
+
+  const handleShowToast = () => {
+    setMessage("Texto copiado!");
+    setShowToast(true);
+
+    // Após 3 segundos, o alerta desaparecerá automaticamente
+    setTimeout(() => {
+      setShowToast(false);
+    }, 1000); // 1000ms = 1 segundo
+  };
 
   // Recuperar versículos salvos do localStorage
   useEffect(() => {
@@ -57,10 +73,16 @@ const Home = () => {
     }
   };
 
-  // Função para deletar um versículo
+  // Função para deletar um versículo com confirmação
   const handleDeleteVerse = (index: number) => {
-    const updatedVerses = verses.filter((_, i) => i !== index);
-    setVerses(updatedVerses);
+    // Exibe a janela de confirmação
+    const confirmDelete = window.confirm("Você tem certeza que deseja deletar este versículo?");
+    
+    if (confirmDelete) {
+      // Deleta o versículo caso o usuário confirme
+      const updatedVerses = verses.filter((_, i) => i !== index);
+      setVerses(updatedVerses);
+    }
   };
 
   // Função para iniciar a edição de um versículo
@@ -87,7 +109,6 @@ const Home = () => {
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text)
       .then(() => {
-        alert("Texto copiado para a área de transferência!"); // Mensagem de sucesso
       })
       .catch((error) => {
         console.error("Erro ao copiar o texto: ", error);
@@ -120,13 +141,13 @@ const Home = () => {
             onChange={(e) => setNewVerse({ ...newVerse, book: e.target.value })}
           />
           <input
-            type="number"
+            type="text"
             placeholder="Capítulo"
             value={newVerse.chapter}
             onChange={(e) => setNewVerse({ ...newVerse, chapter: e.target.value })}
           />
           <input
-            type="number"
+            type="text"
             placeholder="Versículo"
             value={newVerse.verse}
             onChange={(e) => setNewVerse({ ...newVerse, verse: e.target.value })}
@@ -164,12 +185,13 @@ const Home = () => {
                 <i>{verse.theme}</i>
               </p>
               <button onClick={() => handleEditVerse(index)}>Editar</button>
-              <button onClick={() => handleDeleteVerse(index)}>Deletar</button>
-              <button onClick={() => handleCopy(`${verse.text} - ${verse.book} ${verse.chapter}:${verse.verse}`)}>Copiar</button>
+              <button className={styles.del} onClick={() => handleDeleteVerse(index)}>Deletar</button>
+              <button className={styles.copy} onClick={() => {handleCopy(`${verse.text} - ${verse.book} ${verse.chapter}:${verse.verse}`), handleShowToast()}}>Copiar</button>
             </li>
           ))}
         </ul>
       </main>
+      {showToast && <Toast message={message} onClose={() => setShowToast(false)} />}
     </div>
   );
 };

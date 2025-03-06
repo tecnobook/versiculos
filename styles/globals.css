@@ -47,12 +47,3 @@ button:hover {
 button:active {
   background-color: #003f8b;
 }
-
-/* Estilo para os botões Editar e Deletar */
-button:last-child {
-  background-color: #ff4d4d;
-}
-
-button:last-child:hover {
-  background-color: #e00000;
-}
