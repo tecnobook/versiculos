@@ -189,7 +189,7 @@ const Home: React.FC = () => {
         <ul className={styles.ul}>
           {(themeFilter ? filteredVerses : verses).map((verse, index) => (
             <li key={index} className={styles.item}>
-              <p className={styles.reference}>{verse.text}</p>
+              <p className={styles.textBible}>{verse.text}</p>
               <p className={styles.reference}>
                 <strong>{verse.book}</strong> {verse.chapter}:{verse.verse} -{' '}
                 <i>{verse.theme}</i>
