@@ -1,11 +1,12 @@
 // pages/index.tsx
 import { useState, useEffect } from 'react';
+import styles from '../styles/Home.module.css';
 
 interface Verse {
   text: string;
   book: string;
-  chapter: number;
-  verse: number;
+  chapter: string;
+  verse: string;
   theme: string;
 }
 
@@ -16,8 +17,8 @@ const Home = () => {
   const [newVerse, setNewVerse] = useState<Verse>({
     text: '',
     book: '',
-    chapter: 0,
-    verse: 0,
+    chapter: '',
+    verse: '',
     theme: '',
   });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -48,7 +49,7 @@ const Home = () => {
         updatedVerses = [newVerse, ...verses];
       }
       setVerses(updatedVerses);
-      setNewVerse({ text: '', book: '', chapter: 0, verse: 0, theme: '' });
+      setNewVerse({ text: '', book: '', chapter: '', verse: '', theme: '' });
       setEditingIndex(null); // Limpar o estado de edição
     } else {
       alert('Por favor, preencha todos os campos!');
@@ -89,6 +90,7 @@ const Home = () => {
         <div>
           <input
             type="text"
+            className={styles.texto}
             placeholder="Texto"
             value={newVerse.text}
             onChange={(e) => setNewVerse({ ...newVerse, text: e.target.value })}
@@ -103,13 +105,13 @@ const Home = () => {
             type="number"
             placeholder="Capítulo"
             value={newVerse.chapter}
-            onChange={(e) => setNewVerse({ ...newVerse, chapter: +e.target.value })}
+            onChange={(e) => setNewVerse({ ...newVerse, chapter: e.target.value })}
           />
           <input
             type="number"
             placeholder="Versículo"
             value={newVerse.verse}
-            onChange={(e) => setNewVerse({ ...newVerse, verse: +e.target.value })}
+            onChange={(e) => setNewVerse({ ...newVerse, verse: e.target.value })}
           />
           <input
             type="text"

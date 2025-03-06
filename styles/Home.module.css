@@ -166,3 +166,9 @@ a.secondary {
     filter: invert();
   }
 }
+
+@media (max-width: 400px) {
+  .texto {
+    width: 90%;
+  }
+}
