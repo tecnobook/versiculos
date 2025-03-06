@@ -77,7 +77,7 @@ const Home: React.FC = () => {
   const handleDeleteVerse = (index: number) => {
     // Exibe a janela de confirmação
     const confirmDelete = window.confirm("Você tem certeza que deseja deletar este versículo?");
-    
+
     if (confirmDelete) {
       // Deleta o versículo caso o usuário confirme
       const updatedVerses = verses.filter((_, i) => i !== index);
@@ -124,8 +124,8 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <header style={{ padding: '1rem', backgroundColor: '#f4f4f4' }}>
-        <h1>Exibidor de Versículos Bíblicos</h1>
+      <header style={{ padding: '1rem' }}>
+        <h1>Versículos Bíblicos</h1>
         <div>
           <input
             type="text"
@@ -155,6 +155,9 @@ const Home: React.FC = () => {
           <input
             type="text"
             placeholder="Tema"
+            id="tema"
+            list='temas'
+            name='tema'
             value={newVerse.theme}
             onChange={(e) => setNewVerse({ ...newVerse, theme: e.target.value })}
           />
@@ -172,21 +175,30 @@ const Home: React.FC = () => {
             ))}
           </select>
         </div>
+        <datalist id="temas">
+          {themes.map((theme) => (
+            <option key={theme} value={theme}>
+              {theme}
+            </option>
+          ))}
+        </datalist>
       </header>
 
       <main style={{ padding: '2rem' }}>
         <h2>Lista de Versículos</h2>
-        <ul>
+        <ul className={styles.ul}>
           {(themeFilter ? filteredVerses : verses).map((verse, index) => (
-            <li key={index}>
-              <p>{verse.text}</p>
-              <p>
+            <li key={index} className={styles.item}>
+              <p className={styles.reference}>{verse.text}</p>
+              <p className={styles.reference}>
                 <strong>{verse.book}</strong> {verse.chapter}:{verse.verse} -{' '}
                 <i>{verse.theme}</i>
               </p>
-              <button onClick={() => handleEditVerse(index)}>Editar</button>
-              <button className={styles.del} onClick={() => handleDeleteVerse(index)}>Deletar</button>
-              <button className={styles.copy} onClick={() => {handleCopy(`${verse.text} - ${verse.book} ${verse.chapter}:${verse.verse}`), handleShowToast()}}>Copiar</button>
+              <div className={styles.buttonArea}>
+                <button className={styles.button} onClick={() => handleEditVerse(index)}>Editar</button>
+                <button className={styles.del} onClick={() => handleDeleteVerse(index)}>Deletar</button>
+                <button className={styles.copy} onClick={() => { handleCopy(`${verse.text} - ${verse.book} ${verse.chapter}:${verse.verse}`), handleShowToast() }}>Copiar</button>
+              </div>
             </li>
           ))}
         </ul>

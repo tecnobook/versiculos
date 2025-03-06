@@ -100,9 +100,11 @@ a.secondary {
 
 .del {
   background-color: crimson;
+  margin: 5px;
 }
 .copy {
   background-color: rgb(14, 174, 121);
+  margin: 5px;
 }
 
 .footer a {
@@ -113,6 +115,36 @@ a.secondary {
 
 .footer img {
   flex-shrink: 0;
+}
+
+.item {
+  background-color: aliceblue;
+  box-shadow: 1px 1px black;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+.ul {
+  list-style-type: none;
+  padding-left: 0; /* Opcional, remove o recuo da lista */
+}
+
+.reference {
+  font-size: 14px;
+}
+
+.buttonArea {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap ;
+}
+
+.button {
+  margin: 5px;
+}
+
+.textBible {
+  font-size: 18px;
 }
 
 /* Enable hover only on non-touch devices */
