@@ -14,6 +14,7 @@ const Home = () => {
   const [verses, setVerses] = useState<Verse[]>([]);
   const [filteredVerses, setFilteredVerses] = useState<Verse[]>([]);
   const [themeFilter, setThemeFilter] = useState<string>('');
+  const [showOptions, setShowOptions] = useState(false);
   const [newVerse, setNewVerse] = useState<Verse>({
     text: '',
     book: '',
@@ -83,6 +84,23 @@ const Home = () => {
   // Obter lista de temas únicos
   const themes = Array.from(new Set(verses.map((verse) => verse.theme)));
 
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        alert("Texto copiado para a área de transferência!"); // Mensagem de sucesso
+      })
+      .catch((error) => {
+        console.error("Erro ao copiar o texto: ", error);
+      });
+  }
+
+  const handleMouseDown = () => {
+    // Espera 1 segundo antes de mostrar as opções
+    setTimeout(() => {
+      setShowOptions(true);
+    }, 1000); // 1000ms = 1 segundo
+  };
+
   return (
     <div>
       <header style={{ padding: '1rem', backgroundColor: '#f4f4f4' }}>
@@ -147,6 +165,7 @@ const Home = () => {
               </p>
               <button onClick={() => handleEditVerse(index)}>Editar</button>
               <button onClick={() => handleDeleteVerse(index)}>Deletar</button>
+              <button onClick={() => handleCopy(`${verse.text} - ${verse.book} ${verse.chapter}:${verse.verse}`)}>Copiar</button>
             </li>
           ))}
         </ul>
